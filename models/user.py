@@ -4,7 +4,8 @@ from marshmallow import fields
 class User(db.Model):
     __tablename__ = "users"
     
-    user_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
@@ -16,11 +17,9 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     
     class Meta:
-        fields = ("user_id", "name", "email", "password", "is_admin")
+        fields = ("id", "name", "email", "password", "is_admin")
         
 
 user_schema = UserSchema(exlude=["password"])
 
 users_schema = UserSchema(many=True, exclude=["password"])
-    
-    
