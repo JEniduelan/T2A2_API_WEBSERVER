@@ -11,29 +11,29 @@ def db_create():
     db.create_all()
     print("Tables have been created")
     
-# @db_commands.cli.command("drop")
-# def db_drop():
-#     db.drop_all()
-#     print("Tables have been dropped")
+@db_commands.cli.command("drop")
+def db_drop():
+    db.drop_all()
+    print("Tables have been dropped")
     
-# @db_commands.cli.commands("seed")
-# def db_seed():
-#     users = [
-#         User(
-#             name="Matthew Santos",
-#             email="matthew@email.com",
-#             password=bcrypt.generate_password_hash("matthew1").decode("utf-8"),
-#             is_admin=True
-#         ),
-#         User(
-#             name="Mark Tolentino",
-#             email="marktolentino@email.com",
-#             password=bcrypt.generate_password_hash("mark123").decode("utf-8"),
-#             is_admin=False
-#         )
-#     ]
+@db_commands.cli.commands("seed")
+def db_seed():
+    users = [
+        User(
+            name="Matthew Santos",
+            email="matthew@email.com",
+            password=bcrypt.generate_password_hash("matthew1").decode("utf-8"),
+            is_admin=True
+        ),
+        User(
+            name="Mark Tolentino",
+            email="marktolentino@email.com",
+            password=bcrypt.generate_password_hash("mark123").decode("utf-8"),
+            is_admin=False
+        )
+    ]
 
     
-# db.session.add_all()
-# db.session.commit()
+    db.session.add_all(users)
+    db.session.commit()
     
