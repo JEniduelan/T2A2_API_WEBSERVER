@@ -16,7 +16,7 @@ def db_drop():
     db.drop_all()
     print("Tables have been dropped")
     
-@db_commands.cli.commands("seed")
+@db_commands.cli.command("seed")
 def db_seed():
     users = [
         User(
@@ -32,8 +32,8 @@ def db_seed():
             is_admin=False
         )
     ]
-
-    
+ 
     db.session.add_all(users)
     db.session.commit()
     
+    print("tables seeded")
