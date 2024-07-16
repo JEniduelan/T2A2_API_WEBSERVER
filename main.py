@@ -8,7 +8,7 @@ def create_app():
     app = Flask(__name__)
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-            
+                
     app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
     db.init_app(app)
@@ -16,9 +16,10 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
 
+
     from Blueprints.cli_bp import db_commands
     app.register_blueprint(db_commands)
     from Blueprints.auth_bp import auth
     app.register_blueprint(auth)
-
+    
     return app

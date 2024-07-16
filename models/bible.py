@@ -3,8 +3,8 @@ from main import db, ma
 from marshmallow import fields
 
 
-class BibleScripture(db.Model):
-    __tablename__ = "bible_scripture"
+class Bible(db.Model):
+    __tablename__ = "bible"
     
     id = db.Column(db.Integer, primary_key=True)
     
@@ -18,12 +18,12 @@ class BibleScripture(db.Model):
     
     
     
-    class BibleScriptureSchema(ma.Schema):
+    class BibleSchema(ma.Schema):
      
          class Meta:
             fields = ("id", "book", "chapter", "verse", "version", "text", "user_id")
             
-bible_scripture_schema = BibleScriptureSchema()
-bible_scriptures_schema = BibleScriptureSchema(many=True)
+# bible_scripture_schema = BibleSchema()
+# bible_scriptures_schema = BibleSchema(many=True)
             
     
