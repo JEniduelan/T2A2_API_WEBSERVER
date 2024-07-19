@@ -1,5 +1,5 @@
 
-from main import db, ma
+from init import db, ma
 from marshmallow import fields
 
 
@@ -32,8 +32,8 @@ class BibleSchema(ma.Schema):
         # group = fields.Nested("GroupSchema",only=["id"] )
      
         class Meta:
-            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "group")
-            
+            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user")
+            ordered = True
 bible_schema = BibleSchema()
 bibles_schema = BibleSchema(many=True)
             

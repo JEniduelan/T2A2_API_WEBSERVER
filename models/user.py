@@ -1,4 +1,4 @@
-from main import db, ma
+from init import db, ma
 from marshmallow import fields
 
 class User(db.Model):
@@ -18,7 +18,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     
     bible = fields.List(fields.Nested("BibleSchema", exclude=["user"]))
-    # reflection = fields.Nested("ReflectionSchema", only=["id"])
+    # reflection = fields.Nested("ReflectionSchema", only=["user"])
     # groupmember = fields.Nested("GroupMemberSchema",only=["id"] )
     
     

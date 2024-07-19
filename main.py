@@ -21,5 +21,6 @@ def create_app():
     app.register_blueprint(db_commands)
     from Blueprints.auth_bp import auth
     app.register_blueprint(auth)
-    
+    from Blueprints.bible_bp import bible_bp
+    app.register_blueprint(bible_bp)
     return app
