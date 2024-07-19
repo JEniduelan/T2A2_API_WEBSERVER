@@ -10,22 +10,31 @@ class Bible(db.Model):
     
     book = db.Column(db.String, nullable=False)
     chapter = db.Column(db.Integer, nullable=False)
-    verse = db.Column(db.Integer, nullable=False)
+    verse_number = db.Column(db.Integer, nullable=False)
     version = db.Column(db.String, nullable=False)
-    text = db.Column(db.Text, nullable=False)  
+    verse = db.Column(db.Text, nullable=False)  
     
+    #foreign key which establishes the relationship at the database level
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    group_id = db.Column(db.Integer, db.models.ForeignKey("group.id", nullable=False))
+    # group_id = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=False)
     
+   
     user = db.relationship("User", back_populates="bible")
+    # group = db.relationship("Group", back_populates="bible")
+    # reflection = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
     
-    class BibleSchema(ma.Schema):
+
+    
+class BibleSchema(ma.Schema):
+       
         user = fields.Nested("UserSchema", only=["id", "name"])
+        # reflection = fields.Nested("ReflectionSchema")
+        # group = fields.Nested("GroupSchema",only=["id"] )
      
         class Meta:
-            fields = ("id", "book", "chapter", "verse", "version", "text", "user", "group")
+            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "group")
             
-    bible_schema = BibleSchema()
-    bibles_schema = BibleSchema(many=True)
+bible_schema = BibleSchema()
+bibles_schema = BibleSchema(many=True)
             
     
