@@ -45,13 +45,15 @@ def login():
     data = request.get_json()
     stmt = db.select(User).filter_by(email=data.get("email"))
     user = db.session.scalar(stmt)
+    
     if user and bcrypt.check_password_hash(user.password, data.get("password")):
      
      jwt_token = create_access_token(identity=str(user.id), expires_delta=timedelta(minutes=30))
-     return{"email": user.email, "token": jwt_token}
+     
+     return{"email": user.email,"is_admin": user.is_admin, "token": jwt_token}
  
     else:
-        return{"error": "Please enter a valid username or password"}, 401   
+     return{"error": "Please enter a valid username or password"}, 401   
     
     
     

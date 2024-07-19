@@ -35,3 +35,4 @@ def db_seed():
     db.session.commit()
     
     print("tables seeded")
+    

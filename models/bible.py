@@ -15,15 +15,17 @@ class Bible(db.Model):
     text = db.Column(db.Text, nullable=False)  
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    group_id = db.Column(db.Integer, db.models.ForeignKey("group.id", nullable=False))
     
-    
+    user = db.relationship("User", back_populates="bible")
     
     class BibleSchema(ma.Schema):
+        user = fields.Nested("UserSchema", only=["id", "name"])
      
-         class Meta:
-            fields = ("id", "book", "chapter", "verse", "version", "text", "user_id")
+        class Meta:
+            fields = ("id", "book", "chapter", "verse", "version", "text", "user", "group")
             
-# bible_scripture_schema = BibleSchema()
-# bible_scriptures_schema = BibleSchema(many=True)
+    bible_schema = BibleSchema()
+    bibles_schema = BibleSchema(many=True)
             
     
