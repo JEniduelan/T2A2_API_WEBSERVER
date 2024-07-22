@@ -54,24 +54,3 @@ def delete_bible(id):
     
     else:
         return {"error": f"Sorry! no Bible card with id '{id}' is found"}, 404
-  
-#  # update method   
-# @bible_bp.route("<int:id>", methods=["PUT", "PATCH"])
-# @jwt_required
-# def update_bible(id):
-#     body_data = request.get_json()
-#     stmt = db.select(Bible).filter_by(id=id)
-#     bible = db.session.scalar(stmt)
-    
-#     if bible:
-#         bible.id = body_data.get("bible_id") or bible.id
-#         db.session.commit()
-#         return bible_schema.dump(bible)
-#     else:
-#         return {"error": f"Sorry! no Bible card with id '{id}' is found"}, 404
-   
-    
-    
-    
-
-    

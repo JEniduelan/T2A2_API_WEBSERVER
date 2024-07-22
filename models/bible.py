@@ -21,19 +21,20 @@ class Bible(db.Model):
    
     user = db.relationship("User", back_populates="bible")
     # group = db.relationship("Group", back_populates="bible")
-    # reflection = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
+    reflection = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
     
 
     
 class BibleSchema(ma.Schema):
        
         user = fields.Nested("UserSchema", only=["id", "name"])
-        # reflection = fields.Nested("ReflectionSchema")
+        reflection = fields.List(fields.Nested("ReflectionSchema", exclude=["bible"]))
         # group = fields.Nested("GroupSchema",only=["id"] )
      
         class Meta:
-            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user")
+            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "reflection")
             ordered = True
+            
 bible_schema = BibleSchema()
 bibles_schema = BibleSchema(many=True)
             

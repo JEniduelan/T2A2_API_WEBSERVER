@@ -11,19 +11,19 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     
     bible = db.relationship("Bible", back_populates="user")
-    # reflection = db.relationship("Reflection", back_populates="users")
+    reflection = db.relationship("Reflection", back_populates="user")
     # groupmember = db.relationship("GroupMember", back_populates="users")
     
     
 class UserSchema(ma.Schema):
     
     bible = fields.List(fields.Nested("BibleSchema", exclude=["user"]))
-    # reflection = fields.Nested("ReflectionSchema", only=["user"])
+    reflection = fields.List(fields.Nested("ReflectionSchema", only=["user"]))
     # groupmember = fields.Nested("GroupMemberSchema",only=["id"] )
     
     
     class Meta:
-        fields = ("id", "name", "email", "password", "admin")
+        fields = ("id", "name", "email", "password", "admin", "bible", "reflection")
       
         
 

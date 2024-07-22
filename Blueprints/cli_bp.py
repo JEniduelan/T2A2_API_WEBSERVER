@@ -1,10 +1,11 @@
+from datetime import date
 
 from flask import Blueprint
 
 from init import db, bcrypt
 from models.user import User
 from models.bible import Bible
-# from models.reflection import Reflection
+from models.reflection import Reflection
 
 
 db_commands = Blueprint("db", __name__)
@@ -55,13 +56,21 @@ def db_seed():
     ]
     db.session.add_all(bible)
     
-    # reflection = [
-    #     Reflection(
-            
-    #     )
-        
-    # ]
-    # db.session.add_all(reflection)
+    reflection = [
+        Reflection(
+            message = "message1",
+            date = date.today(),
+            user=users[0],
+            bible = bible[0]
+        ),
+        Reflection(
+            message = "message2",
+            date = date.today(),
+            user=users[1],
+            bible = bible[1]
+        )
+    ]
+    db.session.add_all(reflection)
     db.session.commit()
     
     print("tables seeded")
