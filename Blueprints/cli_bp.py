@@ -4,6 +4,7 @@ from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
 from models.bible import Bible
+# from models.reflection import Reflection
 
 
 db_commands = Blueprint("db", __name__)
@@ -53,6 +54,14 @@ def db_seed():
         )
     ]
     db.session.add_all(bible)
+    
+    # reflection = [
+    #     Reflection(
+            
+    #     )
+        
+    # ]
+    # db.session.add_all(reflection)
     db.session.commit()
     
     print("tables seeded")
