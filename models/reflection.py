@@ -10,7 +10,7 @@ class Reflection(db.Model):
     date = db.Column(db.Date, default=datetime.now().strftime("%Y-%m-%d"))
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    bible_id = db.Column(db.Integer, db.ForeignKey("bible.id"), nullable=True)
+    bible_id = db.Column(db.Integer, db.ForeignKey("bible.id"), nullable=False)
     
     user = db.relationship("User", back_populates="reflection")
     bible = db.relationship("Bible", back_populates="reflection")

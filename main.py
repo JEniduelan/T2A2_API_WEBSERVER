@@ -3,6 +3,10 @@ import os
 from flask import Flask
 
 from init import db, ma, bcrypt, jwt
+from Blueprints.cli_bp import db_commands
+from Blueprints.auth_bp import auth
+from Blueprints.bible_bp import bible_bp
+from Blueprints.reflection_bp import reflection
 
 def create_app():
     app = Flask(__name__)
@@ -17,12 +21,11 @@ def create_app():
     ma.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
-
-
-    from Blueprints.cli_bp import db_commands
+ 
     app.register_blueprint(db_commands)
-    from Blueprints.auth_bp import auth
     app.register_blueprint(auth)
-    from Blueprints.bible_bp import bible_bp
     app.register_blueprint(bible_bp)
+    app.register_blueprint(reflection)
+    
+    
     return app

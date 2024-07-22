@@ -28,7 +28,7 @@ class Bible(db.Model):
 class BibleSchema(ma.Schema):
        
         user = fields.Nested("UserSchema", only=["id", "name"])
-        reflection = fields.List(fields.Nested("ReflectionSchema", exclude=["bible"]))
+        reflection = fields.List(fields.Nested("ReflectionSchema", exclude=["bible", "user"]))
         # group = fields.Nested("GroupSchema",only=["id"] )
      
         class Meta:
