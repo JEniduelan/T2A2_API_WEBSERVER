@@ -4,7 +4,11 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from init import db
 from models.bible import Bible, bible_schema, bibles_schema
 
+from Blueprints.reflection_bp import reflections_bp 
+
 bible_bp = Blueprint("bibles", __name__, url_prefix="/bibles")
+
+bible_bp.register_blueprint(reflections_bp)
 
 @bible_bp.route("/")
 def all_bible():

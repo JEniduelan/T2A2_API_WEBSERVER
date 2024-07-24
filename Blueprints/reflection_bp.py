@@ -7,9 +7,9 @@ from init import db
 from models.reflection import Reflection, reflection_schema, reflections_schema
 from models.bible import Bible
 
-reflection = Blueprint("reflection", __name__, url_prefix="/<int:bible_id>/reflections")
+reflections_bp = Blueprint("reflections", __name__, url_prefix="/<int:bible_id>/reflections")
 
-@reflection.route("/", methods=["POST"])
+@reflections_bp.route("/", methods=["POST"])
 @jwt_required()
 def create_reflection(bible_id):
     
@@ -19,6 +19,7 @@ def create_reflection(bible_id):
     
     if bible:
         new_reflection = Reflection(
+            title = body_data.get("title"),
             message=body_data.get("message"),
             date=date.today(),
             bible=bible,
@@ -33,7 +34,7 @@ def create_reflection(bible_id):
         return{"error": f"Sorry! no Bible card with id '{id}' is found"}, 404
     
 
-@reflection.route("/<int:reflection_id>", methods=["DELETE"])
+@reflections_bp.route("/<int:reflection_id>", methods=["DELETE"])
 @jwt_required()
 def delete_reflection(relfection_id):
     stmt = db.select(Reflection).filter_by(id=relfection_id)

@@ -64,16 +64,25 @@ def db_seed():
     
     reflections = [
         Reflection(
-            message = "message1",
-            date = date.today(),
+            title = "Reflection1",
+            message="Comment 1",
+            date=date.today(),
             user=users[0],
-            bible = bibles[0]
+            bible=bibles[0]
         ),
         Reflection(
-            message = "message2",
-            date = date.today(),
+            title = "Reflection2",
+            message="Comment 2",
+            date=date.today(),
+            user=users[0],
+            bible=bibles[0]
+        ),
+        Reflection(
+            title = "Reflection3",
+            message="Comment 3",
+            date=date.today(),
             user=users[1],
-            bible = bibles[1]
+            bible=bibles[1]
         )
     ]
     db.session.add_all(reflections)

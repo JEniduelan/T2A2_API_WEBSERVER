@@ -7,7 +7,8 @@ class Reflection(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     
-    message = db.Column(db.String, nullable=False)
+    title = db.Column(db.String, nullable=False)
+    message = db.Column(db.Text, nullable=False)
     date = db.Column(db.Date)
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -20,12 +21,13 @@ class Reflection(db.Model):
     
     
 class ReflectionSchema(ma.Schema):  
-        user = fields.Nested("UserSchema", only= ["id", "name"])
-        bible = fields.Nested("BibleSchema", exclude=["reflections"] )
+    
+        user = fields.Nested("UserSchema", only=["name"])
+        bible = fields.Nested("BibleSchema", only=["reflections"] )
         
         
 class Meta:
-    fields = ("id", "message", "date", "user", "bible")
+    fields = ("id","title" ,"message", "date", "user", "bible")
 
 reflection_schema = ReflectionSchema()
 reflections_schema = ReflectionSchema(many=True)
