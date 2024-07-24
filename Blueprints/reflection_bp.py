@@ -18,36 +18,31 @@ def create_reflection(id):
     bible = db.session.scalar(stmt)
     
     if bible:
-        reflection = Reflection(
-            message = body_data.get("message"),
-            date = date.today(),
-            bible=bible,
+        new_reflection = Reflection(
+            message=body_data.get("message"),
+            date=date.today(),
+            bible_id=bible.id,
             user_id = get_jwt_identity()
         )
-        db.session.add(reflection)
+        db.session.add(new_reflection)
         db.session.commit()
-        return reflection_schema.dump(reflection), 201
+        return reflection_schema.dump(new_reflection), 201
     
     else:
         return{"error": f"Sorry! no Bible card with id '{id}' is found"}, 404
     
 
-# @reflection.route("/<int:id>", methods=["DELETE"])
-# @jwt_required()
-# def delete_reflection(relfection_id):
-#     stmt = db.select(Reflection).filter_by(id=relfection_id)
-#     reflection = db.session.scalar(stmt)
+@reflection.route("/<int:reflection_id>", methods=["DELETE"])
+@jwt_required()
+def delete_reflection(relfection_id):
+    stmt = db.select(Reflection).filter_by(id=relfection_id)
+    reflection = db.session.scalar(stmt)
     
-#     if reflection:
-#         db.session.delete(reflection)
-#         db.session.commit()
-#         return {"messsage":f"reflection with id '{reflection.message}' has been successfully deleted"}
+    if reflection:
+        db.session.delete(reflection)
+        db.session.commit()
+        return {"messsage":f"reflection with id '{reflection.message}' has been successfully deleted"}
     
-#     else:
-#         return {"error": f"Sorry! no reflection with id '{relfection_id}' is found"}, 404
+    else:
+        return {"error": f"Sorry! no reflection with id '{relfection_id}' is found"}, 404
     
-    
-
-# @reflection.route("/<int:id>", methods=["PUT", "PATCH"])
-# @jwt_required()
-# def 

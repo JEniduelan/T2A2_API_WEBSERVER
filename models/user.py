@@ -9,21 +9,24 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+    is_groupmember = db.Column(db.Boolean, default=False)
+    
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id')) 
     
     bible = db.relationship("Bible", back_populates="user")
     reflection = db.relationship("Reflection", back_populates="user")
-    # groupmember = db.relationship("GroupMember", back_populates="users")
-    
+    group = db.relationship("Group", back_populates="user")
     
 class UserSchema(ma.Schema):
     
     bible = fields.List(fields.Nested("BibleSchema", exclude=["user"]))
-    reflection = fields.List(fields.Nested("ReflectionSchema"))
-    # groupmember = fields.Nested("GroupMemberSchema",only=["id"] )
+    reflection = fields.List(fields.Nested("ReflectionSchema", exclude=["user"]))
+    group = fields.Nested("GroupSchema", exclude=["user", "reflection","bible"] )
+
     
     
     class Meta:
-        fields = ("id", "name", "email", "password", "admin", "bible", "reflection")
+        fields = ("id", "name", "email", "password", "is_admin","is_groupmember", "bible", "reflection")
       
         
 

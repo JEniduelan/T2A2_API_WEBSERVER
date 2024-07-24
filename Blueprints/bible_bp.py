@@ -9,7 +9,7 @@ bible_bp = Blueprint("bible", __name__, url_prefix="/bibles")
 @bible_bp.route("/")
 def all_bible():
     stmt = db.select(Bible)
-    bibles = db.session.scalars(stmt)
+    bibles = db.session.scalars(stmt).all()
     return bibles_schema.dump(bibles)
 
 @bible_bp.route("/<int:id>")

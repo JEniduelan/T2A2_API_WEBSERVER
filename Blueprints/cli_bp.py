@@ -6,6 +6,8 @@ from init import db, bcrypt
 from models.user import User
 from models.bible import Bible
 from models.reflection import Reflection
+from models.group import Group
+
 
 
 db_commands = Blueprint("db", __name__)
@@ -26,12 +28,15 @@ def db_seed():
         User(
             name="Matthew Santos",
             email="matthew@email.com",
-            password=bcrypt.generate_password_hash("matthew1").decode("utf-8")
+            password=bcrypt.generate_password_hash("matthew1").decode("utf-8"),
+            is_groupmember=True
         ),
         User(
             name="Mark Tolentino",
             email="marktolentino@email.com",
-            password=bcrypt.generate_password_hash("mark1").decode("utf-8")
+            password=bcrypt.generate_password_hash("mark1").decode("utf-8"),
+            is_admin=True,
+            is_groupmember=True
         )
     ]
     db.session.add_all(users)
@@ -71,6 +76,20 @@ def db_seed():
         )
     ]
     db.session.add_all(reflection)
+    
+    group = [
+        Group(
+            group_name = "group1",
+            date_created = date.today(),
+            reflection = reflection[0]
+        ),
+        Group(
+            group_name = "group2",
+            date_created = date.today(),
+            reflection = reflection[1]
+        )
+    ]
+    db.session.add_all(group)
     db.session.commit()
     
     print("tables seeded")
