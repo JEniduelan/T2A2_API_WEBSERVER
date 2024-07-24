@@ -7,25 +7,26 @@ from init import db
 from models.reflection import Reflection, reflection_schema, reflections_schema
 from models.bible import Bible
 
-reflection = Blueprint("reflection", __name__)
+reflection = Blueprint("reflection", __name__, url_prefix="/<int:bible_id>/reflections")
 
-@reflection.route("/bibles/<int:id>/reflection", methods=["POST"])
+@reflection.route("/", methods=["POST"])
 @jwt_required()
-def create_reflection(id):
+def create_reflection(bible_id):
     
     body_data = request.get_json()
-    stmt = db.select(Bible).filter_by(id=id)
+    stmt = db.select(Bible).filter_by(id=bible_id)
     bible = db.session.scalar(stmt)
     
     if bible:
         new_reflection = Reflection(
             message=body_data.get("message"),
             date=date.today(),
-            bible_id=bible.id,
+            bible=bible,
             user_id = get_jwt_identity()
         )
         db.session.add(new_reflection)
         db.session.commit()
+        
         return reflection_schema.dump(new_reflection), 201
     
     else:

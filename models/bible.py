@@ -4,7 +4,7 @@ from marshmallow import fields
 
 
 class Bible(db.Model):
-    __tablename__ = "bible"
+    __tablename__ = "bibles"
     
     id = db.Column(db.Integer, primary_key=True)
     
@@ -15,23 +15,22 @@ class Bible(db.Model):
     verse = db.Column(db.Text, nullable=False)  
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=False)
+   
     
    
-    user = db.relationship("User", back_populates="bible")
-    group = db.relationship("Group", back_populates="bible")
-    reflection = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
+    user = db.relationship("User", back_populates="bibles")
+    reflections = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
     
 
     
 class BibleSchema(ma.Schema):
        
-        user = fields.Nested("UserSchema", only=["id", "name"])
-        reflection = fields.List(fields.Nested("ReflectionSchema", exclude=["bible"]))
-        group = fields.Nested("GroupSchema",only=["id"] )
+        user = fields.Nested("UserSchema", only=["name"])
+        reflections = fields.List(fields.Nested("ReflectionSchema", exclude=["bible"]))
+        
      
         class Meta:
-            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "reflection", "group")
+            fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "reflections")
             ordered = True
             
 bible_schema = BibleSchema()
