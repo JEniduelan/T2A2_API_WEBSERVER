@@ -7,7 +7,7 @@ from init import db, bcrypt
 from models.user import User
 from models.bible import Bible
 from models.reflection import Reflection
-from models.group import Group
+from models.follows import Follows
 
 
 
@@ -30,14 +30,19 @@ def db_seed():
             name="Matthew Santos",
             email="matthew@email.com",
             password=bcrypt.generate_password_hash("matthew1").decode("utf-8"),
-            is_groupmember=True
+            
         ),
         User(
             name="Mark Tolentino",
             email="marktolentino@email.com",
             password=bcrypt.generate_password_hash("mark1").decode("utf-8"),
             is_admin=True,
-            is_groupmember=True
+        ),
+        User(
+            name="john Nieves",
+            email="johnn@email.com",
+            password=bcrypt.generate_password_hash("john1").decode("utf-8"),
+            is_admin=True,
         )
     ]
     db.session.add_all(users)
@@ -49,7 +54,7 @@ def db_seed():
             verse_number = "1",
             version = "nkjv",
             verse = "In the beginning God created the heavens and the earth.",
-            user=users[0]
+            user=users[0], 
         ),
         Bible(
             book = "Romans",
@@ -57,7 +62,15 @@ def db_seed():
             verse_number = "8",
             version = "nkjv",
             verse = "But God demonstrates His own love toward us, in that while we were still sinners, Christ died for us.",
-            user=users[1]
+            user=users[1],
+        ),
+        Bible(
+            book = "2 Timothy",
+            chapter = "1",
+            verse_number = "7",
+            version = "niv",
+            verse = "For God has not given us a spirit of fear and timidity, but of power, love, and self-discipline.",
+            user=users[0]
         )
     ]
     db.session.add_all(bibles)
@@ -75,7 +88,7 @@ def db_seed():
             message="Comment 2",
             date=date.today(),
             user=users[0],
-            bible=bibles[0]
+            bible=bibles[2]
         ),
         Reflection(
             title = "Reflection3",
@@ -87,19 +100,19 @@ def db_seed():
     ]
     db.session.add_all(reflections)
     
-    group = [
-        Group(
-            group_name = "group1",
-            date_created = date.today(),
-            reflection = reflections[0]
-        ),
-        Group(
-            group_name = "group2",
-            date_created = date.today(),
-            reflection = reflections[1]
-        )
+    follows = [
+        # User 1 follows User 2 and User 3
+        Follows(follower_id=users[0].id, following_id=users[1].id), 
+        Follows(follower_id=users[0].id, following_id=users[2].id),
+
+        # User 2 follows User 3
+        Follows(follower_id=users[1].id, following_id=users[2].id),
+
+        # User 3 follows User 2
+        Follows(follower_id=users[2].id, following_id=users[1].id)
     ]
-    db.session.add_all(group)
+
+    
     db.session.commit()
     
     print("tables seeded")

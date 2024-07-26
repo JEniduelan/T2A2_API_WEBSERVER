@@ -16,7 +16,6 @@ class Reflection(db.Model):
     
     
     user = db.relationship("User", back_populates="reflections")
-    group = db.relationship("Group", back_populates="reflections")
     bible = db.relationship("Bible", back_populates="reflections")
     
     
@@ -25,12 +24,11 @@ class Reflection(db.Model):
 class ReflectionSchema(ma.Schema):  
     
         user = fields.Nested("UserSchema", only=["name"])
-        bible = fields.Nested("BibleSchema", only=["reflections"] )
-        group = fields.Nested("GroupSchema", only=["group_name"])
-        
+        bible = fields.Nested("BibleSchema", only=["reflections"] ) 
         
         class Meta:
             fields = ("id","title" ,"message", "date", "user", "bible")
-
+            ordered = True
+            
 reflection_schema = ReflectionSchema()
 reflections_schema = ReflectionSchema(many=True)

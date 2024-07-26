@@ -15,19 +15,16 @@ class Bible(db.Model):
     verse = db.Column(db.Text, nullable=False)  
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=False)
-    
-   
+
+     
     user = db.relationship("User", back_populates="bibles")
     reflections = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
-    groups = db.relationship("Group", back_populates="bible")
 
     
 class BibleSchema(ma.Schema):
        
         user = fields.Nested("UserSchema", only=["id", "name"])
         reflections = fields.List(fields.Nested("ReflectionSchema", exclude=["bible"]))
-        group = fields.List(fields.Nested("GroupSchema", only=["group_name"]))
      
         class Meta:
             fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "reflections")

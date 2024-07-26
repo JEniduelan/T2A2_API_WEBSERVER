@@ -6,7 +6,7 @@ from init import db, ma, bcrypt, jwt
 from Blueprints.cli_bp import db_commands
 from Blueprints.auth_bp import auth
 from Blueprints.bible_bp import bible_bp
-from Blueprints.group_bp import group_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -25,7 +25,7 @@ def create_app():
     app.register_blueprint(db_commands)
     app.register_blueprint(auth)
     app.register_blueprint(bible_bp)
-    app.register_blueprint(group_bp)
+
     
     
     return app

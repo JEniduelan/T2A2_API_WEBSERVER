@@ -1,6 +1,8 @@
 from init import db, ma
 from marshmallow import fields
 
+from models.follows import Follows
+
 class User(db.Model):
     __tablename__ = "users"
     
@@ -9,25 +11,26 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-    is_groupmember = db.Column(db.Boolean, default=False)
-    
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.id')) 
     
     
+      
     bibles = db.relationship("Bible", back_populates="user")
     reflections = db.relationship("Reflection", back_populates="user")
-    group = db.relationship("Group", back_populates="users")
-    
+
+    followers = db.relationship("Follows", foreign_keys= "Follows.follower_id", back_populates="follower", primaryjoin='User.id == Follows.follower_id')
+    following = db.relationship("Follows", foreign_keys="Follows.following_id", back_populates="following", primaryjoin="User.id == Follows.following_id")
+
 class UserSchema(ma.Schema):
     
     bibles = fields.List(fields.Nested("BibleSchema", exclude=["user"]))
     reflections = fields.List(fields.Nested("ReflectionSchema", exclude=["user"]))
-    group = fields.Nested("GroupSchema", exclude=["user", "reflection","bible"] )
 
+    follows = fields.Nested("FollowsSchema", only=["following_id", "followed_at"])
+    followed_by = fields.Nested("FollowsSchema", only=["follower_id", "followed_at"])
     
     
     class Meta:
-        fields = ("id", "name", "email", "groupmember","password", "is_admin", "bibles", "reflections","group")
+        fields = ("id", "name", "email", "groupmember","password", "is_admin", "bibles", "reflections", "follows", "followed_by")
       
         
 
