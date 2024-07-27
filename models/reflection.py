@@ -28,10 +28,13 @@ class ReflectionSchema(ma.Schema):
         # Title must be at least 2 characterslong and alphanumerics only 
         title = fields.String(required=True, validate=And(
         Length(min=2, error="Title must be at least 2 characters long"),
-        Regexp('^[A-Za-z0-9 ]+$', error="Title must have alphanumerics characters only")
+        Regexp("^[A-Za-z0-9 ]+$", error="Title must have alphanumerics characters only")
     ))
         # Message must be at least 1 character long and no more than 200 characters long
-        message = fields.String(required=True, validate=Length(min=1, max=500), error="message must be between 1 and 500 characters long")  
+        message = fields.String(
+            required=True, 
+            validate=Length(min=1, max=500), 
+            error="message must be between 1 and 500 characters long")  
              
         class Meta:
             fields = ("id","title" ,"message", "date", "user", "bible")

@@ -28,11 +28,22 @@ class BibleSchema(ma.Schema):
      
      # VALIDATION
         # Book must contain letters and spaces only
-        book = fields.String(required=True, validate=Regexp("^[a-zA-Z ,.'-]+$", error='Invalid book name'))
+        book = fields.String(
+            required=True, 
+            validate=Regexp(
+                "^[a-zA-Z ,.'-]+$", error="Invalid book name"
+                )
+            )
         # Version must contain letters only
-        version =fields.String(required=True, validate=Regexp("^[A-Za-z]+$", error='Invalid book name'))
+        version =fields.String(
+            required=True, 
+            validate=Regexp(
+                "^[A-Za-z]+$", 
+                error="Invalid book name"
+                )
+            )
         # Verse must be alphanumeric only
-        verse =  fields.String(required=True, validate=Regexp('^[A-Za-z0-9 ]+$', error="Title must have alphanumerics characters only"))
+        verse =  fields.String(required=True, validate=Regexp("^[A-Za-z0-9 ]+$", error="Title must have alphanumerics characters only"))
      
      
         class Meta:

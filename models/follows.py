@@ -10,8 +10,16 @@ class Follows(db.Model):
     following_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     followed_at = db.Column(db.Date, default=datetime.now().strftime('%Y-%m-%d'))
     
-    follower = db.relationship("User", foreign_keys=[follower_id], back_populates="follows")
-    following = db.relationship("User", foreign_keys=[following_id], back_populates="followed_by")
+    follower = db.relationship(
+        "User", 
+        foreign_keys=[follower_id], 
+        back_populates="follows"
+        )
+    following = db.relationship(
+        "User", 
+        foreign_keys=[following_id], 
+        back_populates="followed_by"
+        )
 
 
  
