@@ -24,7 +24,7 @@ class Reflection(db.Model):
 class ReflectionSchema(ma.Schema):  
     
         user = fields.Nested("UserSchema", only=["name"])
-        bible = fields.Nested("BibleSchema", only=["reflections"] ) 
+        bible = fields.Nested("BibleSchema", only=["user"] ) 
         
         class Meta:
             fields = ("id","title" ,"message", "date", "user", "bible")

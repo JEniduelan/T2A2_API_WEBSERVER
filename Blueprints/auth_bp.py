@@ -3,12 +3,12 @@ from init import bcrypt, db
 from datetime import timedelta
 
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token,jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 
+from models.user import User, users_schema, user_schema
 
-from models.user import User, user_schema
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -56,7 +56,22 @@ def login():
      return{"error": "Please enter a valid username or password"}, 401   
     
     
+@auth.route("/")
+@jwt_required()
+def all_users():
+    stmt = db.select(User)
+    users = db.session.scalars(stmt).all()
+    return users_schema.dump(users)
     
     
+@auth.route("/<int:user_id>")
+def one_user(user_id):
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    
+    if user:
+        return user_schema.dump(user)
+    else:
+        return{"error": f"Sorry! no users with id '{user_id}' is found"}, 404
     
     

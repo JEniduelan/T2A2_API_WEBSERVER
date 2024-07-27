@@ -2,6 +2,7 @@
 from init import db, ma
 from marshmallow import fields
 
+from marshmallow.validate import Length, And, Regexp
 
 class Bible(db.Model):
     __tablename__ = "bibles"
@@ -23,8 +24,15 @@ class Bible(db.Model):
     
 class BibleSchema(ma.Schema):
        
-        user = fields.Nested("UserSchema", only=["id", "name"])
+        user = fields.Nested("UserSchema", only=["name"])
         reflections = fields.List(fields.Nested("ReflectionSchema", exclude=["bible"]))
+     
+     #Validate list name input.
+        bible = fields.String(required=True, validate=And(
+        Length(min=3, error="List name must be a minimum 3 characters long."),
+        Regexp("^[A-Za-z0-9 ]+$", error="Only alphanumeric characters allowed in grocery list names.")
+        ))
+     
      
         class Meta:
             fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "reflections")
