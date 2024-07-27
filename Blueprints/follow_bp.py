@@ -1,36 +1,39 @@
 from flask import Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from sqlalchemy.exc import IntegrityError
-from flask import request, jsonify
-from datetime import date
+
+
 from init import db
 from models.follows import Follows
 from models.user import User
 
-follows_bp = Blueprint("follows", __name__, url_prefix="/auth")
+follows_bp = Blueprint("follows", __name__, url_prefix="/users")
 
 # Follow a user
 @follows_bp.route("/<int:user_id>/follow", methods=["POST"])
 @jwt_required()
-def follow_user():
-    follower_id = request.form.get('follower_id')
-    following_id = request.form.get('following_id')
-    
-    if not follower_id or not following_id:
-        return jsonify({'error': 'follower_id and following_id are required'}), 400
-    
-    try:
-        follow = Follows(
-            follower_id=int(follower_id), 
-            following_id=int(following_id), 
-            followed_at=date.today()
-        )
-        db.session.add(follow)
-        db.session.commit()
-        return jsonify({'message': 'Followed successfully'}), 201
-    except IntegrityError as e:
-        db.session.rollback()
-        return jsonify({'error': str(e.orig)}), 500
+def follow_user(user_id):
+    current_user_id = get_jwt_identity()
+
+    if user_id == current_user_id:
+        return {"error": "Sorry but you can't follow yourself"}, 400
+
+    # Check if the user to be followed exists
+    user_to_follow = User.query.get(user_id)
+    if not user_to_follow:
+        return {"error": "User not found"}, 404
+
+    # Check if the follow relationship already exists
+    existing_follow = Follows.query.filter_by(follower_id=current_user_id, following_id=user_id).first()
+    if existing_follow:
+        return {"error": "Already following this user"}, 400
+
+    # Create a new follow relationship
+    new_follow = Follows(follower_id=current_user_id, following_id=user_id)
+    db.session.add(new_follow)
+    db.session.commit()
+
+    return {"message": "User followed successfully"}, 200
+
 # Unfollow a user
 @follows_bp.route("/<int:user_id>/unfollow", methods=["POST"])
 @jwt_required()

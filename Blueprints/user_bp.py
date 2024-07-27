@@ -1,18 +1,21 @@
-from init import bcrypt, db
-
 from datetime import timedelta
 
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token,jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 
-from models.user import User, users_schema, user_schema
+
+from init import db, bcrypt
+from models.user import User, UserSchema, user_schema, users_schema
+from auth import authorize
 
 
-auth = Blueprint("auth", __name__, url_prefix="/auth")
+user_bp = Blueprint("users", __name__, url_prefix="/users")
 
-@auth.route("/register", methods=["POST"])
+
+# Resigter a user
+@user_bp.route("/register", methods=["POST"])
 def register():
     try:
         data = request.get_json()
@@ -38,8 +41,8 @@ def register():
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
             return {"error": "Email already exist, please try another email."}, 409
 
-
-@auth.route("/login", methods = ["POST"])
+# Login a user
+@user_bp.route("/login", methods = ["POST"])
 def login():
     
     data = request.get_json()
@@ -54,9 +57,9 @@ def login():
  
     else:
      return{"error": "Please enter a valid username or password"}, 401   
-    
+ 
 # Get all users
-@auth.route("/")
+@user_bp.route("/")
 @jwt_required()
 def all_users():
     stmt = db.select(User)
@@ -64,7 +67,7 @@ def all_users():
     return users_schema.dump(users)
     
 # Get one users    
-@auth.route("/<int:user_id>")
+@user_bp.route("/<int:user_id>")
 def one_user(user_id):
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
@@ -74,4 +77,51 @@ def one_user(user_id):
     else:
         return{"error": f"Sorry! no users with id '{user_id}' is found"}, 404
     
+
+# Delete a user
+@user_bp.route("/<int:user_id>", methods=["DELETE"])
+@jwt_required()
+def delete_user(user_id):
+    authorize()
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
     
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {"message": f"user {user.username} has been deleted"}
+    else:
+        return {"error": "Sorry no user was found"}, 404
+    
+
+@user_bp.route("/<int:id>/make-admin", methods=["PATCH"])
+@jwt_required()
+def update_user(id):
+    authorize() # Check if the user is admin
+    stmt = db.select(User).filter_by(id=id)
+    user = db.session.scalar(stmt)
+
+    # Check if the user exists
+    if user:
+        # Update the user to admin
+        user.is_admin = True
+        db.session.commit()
+        return {"message": "User updated successfully"}
+    else:
+        return {"error": "Sorry no user was found"}, 404
+    
+@user_bp.route("/<int:id>/remove-admin", methods=["PATCH"])
+@jwt_required()
+def remove_admin(id):
+    authorize() # Check if the user is admin
+    stmt = db.select(User).filter_by(id=id)
+    user = db.session.scalar(stmt)
+
+    # Check if the user exists
+    if user:
+        # Update the user"s is_admin to False
+        user.is_admin = False
+        db.session.commit()
+        return {"message": "User updated successfully"}
+    else:
+        return {"error": "Sorry no user was found"}, 404
