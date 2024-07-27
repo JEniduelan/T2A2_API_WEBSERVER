@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 from init import db
-from models.follows import Follows
+from models.follows import Follows, follow_schema, follows_schema
 from models.user import User
 
 follows_bp = Blueprint("follows", __name__, url_prefix="/users")

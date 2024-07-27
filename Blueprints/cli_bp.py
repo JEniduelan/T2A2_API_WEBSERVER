@@ -29,20 +29,20 @@ def db_seed():
         User(
             name="Matthew Santos",
             email="matthew@email.com",
-            password=bcrypt.generate_password_hash("matthew1").decode("utf-8"),
-            
+            password=bcrypt.generate_password_hash("matthew1!").decode("utf-8"),
+            is_admin=True    
         ),
         User(
             name="Mark Tolentino",
             email="marktolentino@email.com",
-            password=bcrypt.generate_password_hash("mark1").decode("utf-8"),
-            is_admin=True,
+            password=bcrypt.generate_password_hash("mark1234!").decode("utf-8"),
+            
         ),
         User(
             name="john Nieves",
             email="johnn@email.com",
-            password=bcrypt.generate_password_hash("john1").decode("utf-8"),
-            is_admin=True
+            password=bcrypt.generate_password_hash("john1234!").decode("utf-8"),
+            
         )
     ]
    
@@ -90,14 +90,14 @@ def db_seed():
             title = "Reflection2",
             message="Comment 2",
             date=date.today(),
-            user=users[0],
+            user=users[1],
             bible=bibles[1],
         ),
         Reflection(
             title = "Reflection3",
             message="Comment 3",
             date=date.today(),
-            user=users[1],
+            user=users[2],
             bible=bibles[2],
         )
     ]

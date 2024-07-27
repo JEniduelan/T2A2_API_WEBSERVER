@@ -3,7 +3,7 @@ from flask_jwt_extended import get_jwt_identity
 from models.user import User
 from init import db
 
-def authorize(user_id=None):
+def authorise(user_id=None):
     # Get the user ID from the JWT token
     jwt_user_id = get_jwt_identity()
 

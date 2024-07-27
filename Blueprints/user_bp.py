@@ -8,7 +8,7 @@ from psycopg2 import errorcodes
 
 from init import db, bcrypt
 from models.user import User, UserSchema, user_schema, users_schema
-from auth import authorize
+from auth import authorise
 
 
 user_bp = Blueprint("users", __name__, url_prefix="/users")
@@ -82,7 +82,7 @@ def one_user(user_id):
 @user_bp.route("/<int:user_id>", methods=["DELETE"])
 @jwt_required()
 def delete_user(user_id):
-    authorize()
+    authorise()
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
     
@@ -93,11 +93,11 @@ def delete_user(user_id):
     else:
         return {"error": "Sorry no user was found"}, 404
     
-
+# Make user admin
 @user_bp.route("/<int:id>/make-admin", methods=["PATCH"])
 @jwt_required()
 def update_user(id):
-    authorize() # Check if the user is admin
+    authorise() # Check if the user is admin
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
 
@@ -113,7 +113,7 @@ def update_user(id):
 @user_bp.route("/<int:id>/remove-admin", methods=["PATCH"])
 @jwt_required()
 def remove_admin(id):
-    authorize() # Check if the user is admin
+    authorise() # Check if the user is admin
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
 
