@@ -30,31 +30,54 @@ This project provides a seamless digital solution to this problem. Instead of re
 
 ### **R3 - List and explain the third-party services, packages and dependencies used in this app.** <a id="r3"></a>
 
-Flask:
+#### Flask:
 I use Flask to build the different parts of my app, such as routes, which determine what happens when someone makes a request. It's the framework that helps structure my app and handle requests seamlessly.
 
-PostgreSQL:
+#### PostgreSQL:
 PostgreSQL is the database where I store all the important information for my app. Think of it as an intelligent, organized filing cabinet that keeps everything in order for quick and easy access.
 
-SQLAlchemy:
+#### SQLAlchemy:
 SQLAlchemy is my go-to tool for interacting with the database. It translates Python code into SQL queries, ensuring smooth communication between my app and the database without any complications.
 
-Psycopg2:
+#### Psycopg2:
 Psycopg2 works like a reliable courier between my app and the PostgreSQL database. It ensures that whenever my app sends or requests data from the database, the information is delivered safely and correctly.
 
-Marshmallow:
+#### Marshmallow:
 Marshmallow helps convert complex Python objects into a format that can be easily shared, like JSON. It ensures data is serialized and deserialized properly, making data exchange straightforward.
 
-JWT Manager:
+#### JWT Manager:
 When users log in, they get a special token that lets them access parts of the app without having to log in each time. Think of it as a digital pass that keeps them logged in. JWT Manager creates and checks these tokens, ensuring that access is both secure and easy.
 
-Bcrypt:
+#### Bcrypt:
 Bcrypt is used to hash passwords securely. It takes user-created passwords, converts them into a string of generated characters, and stores them safely, ensuring that passwords are protected.
+
+#### Dotenv:
+Reads key-value pairs from a .env file and can set them as environment variables.
 
 ---
 
 ### **R4 - Explain the benefits and drawbacks of this app’s underlying database system.** <a id="r4"></a>
 
+The database system used for this application is Postgresql and this is perfect for my app for a number of reasons:
+
+- **Reliability:** PostgreSQL is known for its rock-solid reliability. It's great at handling complex transactions and keeping data accurate, which is crucial for any application where data integrity is essential.
+
+- **ACID Compliance:** PostgreSQL adheres to the ACID principles (Atomicity, Consistency, Isolation, Durability), ensuring that our app's data remains consistent and secure even in the event of system failures or unexpected issues.
+
+- **Extensibility:**  PostgreSQL is highly customizable. Its extensibility allows me to tailor the database to my app's specific needs, ensuring it can adapt and grow with my application over time.
+
+- **Active Community Support:** The PostgreSQL community is vibrant and supportive, offering extensive resources, documentation, and forums. This support network is invaluable for troubleshooting and following industry best practices.
+
+However, there are some drawbacks:
+
+- **Learning Curve:** Postgresql can be complex for beginners as it has a broad range of advanced features and extensive configuration options which can be overwhelming to set up and handle than other database systems. Despite this, the long-term benefits make the initial effort worthwhile.
+
+- **Horizontal Scalability Challenges:** While PostgreSQL excels in many areas, it may face challenges with extreme horizontal scalability compared to some NoSQL databases designed for large, distributed systems. In such cases, alternative databases might offer more straightforward solutions.
+
+Sources:
+https://docs.digitalocean.com/glossary/acid/#:~:text=state%20ensuring%20durability.-,PostgreSQL,order%20to%20keep%20data%20consistent.
+https://onesignal.com/blog/lessons-learned-from-5-years-of-scaling-postgresql/
+https://www.guru99.com/introduction-postgresql.html
 
 --- 
 
@@ -72,9 +95,11 @@ Bcrypt is used to hash passwords securely. It takes user-created passwords, conv
 
 #### User Model:
 
+
 ---
 
 #### Bible Model:
+
 
 ---
 
