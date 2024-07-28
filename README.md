@@ -25,7 +25,12 @@ This project provides a seamless digital solution to this problem. Instead of re
 
 ### **R2 - Describe the way tasks are allocated and tracked in your project** <a id="r2"></a>
 
-https://trello.com/invite/b/668c85dceb3c2b115bd9d62b/ATTIbc0776acf568829eba959edc062fc3687F9969C5/t2a2apiwebserverq
+
+In this project, I used Trello to effectively track and allocate tasks for building my app. I organized my workflow into four sections: Backlog, To Do, Doing, and Done. Additionally, I implemented a three-level priority scale: low, medium, and high. Each task is assigned a due date and categorised based on its priority level. This system ensures that tasks are managed efficiently and deadlines are met systematically. Please click the linked provided for the Trello reference 
+
+[GitHub Projects](https://trello.com/invite/b/668c85dceb3c2b115bd9d62b/ATTIbc0776acf568829eba959edc062fc3687F9969C5/t2a2apiwebserverq)
+
+Here are the screenshots from Trello throughout the developement.
 
 ![Trello](docs/1%20trello.png)
 ![Trello](docs/2%20trello.png)
