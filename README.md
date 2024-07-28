@@ -231,7 +231,7 @@ This relationship enables the social aspect of the app, where users can follow a
 ### **R7 - Explain the implemented models and their relationships, including how the relationships aid the database implementation.** <a id="r7"></a>
 
 #### User Model:
-The User model is the central entity of my app, encapsulating essential user-related information such as name, email, password, and admin status. It tracks user statistics, including completed tasks and streaks. This model establishes a one-to-many relationship with the Bible and Reflection models, allowing each user to manage multiple Bible entries and reflections. Additionally, the User model supports a many-to-many relationship through the follows model, enabling users to follow and be followed by others. This feature fosters a vibrant social community within the application, encouraging interaction and engagement among users.
+The User model is the central entity of my app, encapsulating essential user-related information such as name, email, password, and admin status. This model establishes a one-to-many relationship with the Bible and Reflection models, allowing each user to manage multiple Bible entries and reflections. Additionally, the User model supports a many-to-many relationship through the follows model, enabling users to follow and be followed by others. This feature fosters a vibrant social community within the application, encouraging interaction and engagement among users.
 
 ```python
 class User(db.Model):
@@ -370,7 +370,7 @@ class Follows(db.Model):
 
 - **Required Data:** email, password
 
-- **Expected Response:** Expected '200 OK' response with a JWT token and user information excluding password and tasks.
+- **Expected Response:** Expected '200 OK' response with a JWT token and user information excluding password.
 
 - **Functionality:** Allows user to log in. If credentials are correct, a JWT token is created and returned along with user information.
 
@@ -453,7 +453,7 @@ class Follows(db.Model):
 
 - **Authentication Methods:** Requires a valid JWT token for authentication.
 
-- **Functionality:** Retrieves all bibles from the app.
+- **Functionality:** Retrieves all bibles from the server.
 
 ![Get /bibles/](docs/all%20bibles.png)
 
@@ -488,7 +488,7 @@ class Follows(db.Model):
 
 ![Delete /tasks/<int:id>](docs/delete%20bible.png)
 
-#### **9. /bible**
+#### **10. /bibles **
 
 - **HTTP Request Verb:** POST
 
@@ -505,7 +505,7 @@ class Follows(db.Model):
 ---
 ### **Reflections Routes**
 ---
-#### **9. /reflections**
+#### **11. /reflections**
 
 - **HTTP Request Verb:** POST
 
@@ -520,7 +520,7 @@ class Follows(db.Model):
 ![Post /reflection](docs/create%20reflection.png)
 
 ---
-#### **9. /bibles/<int:id>/reflection/<reflection:id>**
+#### **12. /bibles/<int:id>/reflection/<reflection:id>**
 
 - **HTTP Request Verb:** DELETE
 
@@ -537,7 +537,7 @@ class Follows(db.Model):
 ---
 ### **Follow Routes**
 ---
-#### **12. /users/<int:user_id>/follow**
+#### **13. /users/<int:user_id>/follow**
 
 - **HTTP Request Verb:** POST
 
@@ -553,7 +553,7 @@ class Follows(db.Model):
 
 ---
 
-#### **13. /users/<int:user_id>/unfollow**
+#### **14. /users/<int:user_id>/unfollow**
 
 - **HTTP Request Verb:** POST
 
@@ -569,7 +569,7 @@ class Follows(db.Model):
 
 ---
 
-#### **14. /users/<int:user_id>/followers**
+#### **15. /users/<int:user_id>/followers**
 
 - **HTTP Request Verb:** GET
 
@@ -585,7 +585,7 @@ class Follows(db.Model):
 
 ---
 
-#### **15. /users/<int:user_id>/following**
+#### **16. /users/<int:user_id>/following**
 
 - **HTTP Request Verb:** GET
 
