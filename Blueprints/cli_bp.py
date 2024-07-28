@@ -84,21 +84,21 @@ def db_seed():
             message="Comment 1",
             date=date.today(),
             user=users[0],
-            bible=bibles[0],
+            bible=bibles[0]
         ),
         Reflection(
             title = "Reflection2",
             message="Comment 2",
             date=date.today(),
             user=users[1],
-            bible=bibles[1],
+            bible=bibles[1]
         ),
         Reflection(
             title = "Reflection3",
             message="Comment 3",
             date=date.today(),
             user=users[2],
-            bible=bibles[2],
+            bible=bibles[2]
         )
     ]
     db.session.add_all(reflections)

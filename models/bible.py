@@ -44,9 +44,6 @@ class BibleSchema(ma.Schema):
                 error="Invalid book name"
                 )
             )
-        # Verse must be alphanumeric only
-        verse =  fields.String(required=True, validate=Regexp("^[A-Za-z0-9 ]+$", error="Title must have alphanumerics characters only"))
-     
      
         class Meta:
             fields = ("id", "book", "chapter", "verse_number", "version", "verse", "user", "reflections")

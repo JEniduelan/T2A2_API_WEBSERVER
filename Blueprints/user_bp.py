@@ -53,7 +53,7 @@ def login():
      
      jwt_token = create_access_token(identity=str(user.id), expires_delta=timedelta(minutes=30))
      
-     return{"email": user.email,"is_admin": user.is_admin, "token": jwt_token}
+     return{"token": jwt_token, "user": UserSchema(exclude=["password","id"]).dump(user)}, 200
  
     else:
      return{"error": "Please enter a valid username or password"}, 401   
@@ -89,7 +89,7 @@ def delete_user(user_id):
     if user:
         db.session.delete(user)
         db.session.commit()
-        return {"message": f"user {user.username} has been deleted"}
+        return {"message": f"user {user_id} has been deleted"}
     else:
         return {"error": "Sorry no user was found"}, 404
     

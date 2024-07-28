@@ -19,7 +19,7 @@ def create_reflection(bible_id):
     
     if bible:
         new_reflection = Reflection(
-            title = body_data.get("title"),
+            title=body_data.get("title"),
             message=body_data.get("message"),
             date=date.today(),
             bible=bible,
@@ -31,13 +31,13 @@ def create_reflection(bible_id):
         return reflection_schema.dump(new_reflection), 201
     
     else:
-        return{"error": f"Sorry! no Bible card with id '{id}' is found"}, 404
+        return{"error": f"Sorry! no Bible card with id '{bible_id}' is found"}, 404
     
 
 @reflections_bp.route("/<int:reflection_id>", methods=["DELETE"])
 @jwt_required()
-def delete_reflection(relfection_id):
-    stmt = db.select(Reflection).filter_by(id=relfection_id)
+def delete_reflection(bible_id, reflection_id):
+    stmt = db.select(Reflection).filter_by(id=reflection_id)
     reflection = db.session.scalar(stmt)
     
     if reflection:
@@ -46,5 +46,5 @@ def delete_reflection(relfection_id):
         return {"messsage":f"reflection with id '{reflection.message}' has been successfully deleted"}
     
     else:
-        return {"error": f"Sorry! no reflection with id '{relfection_id}' is found"}, 404
+        return {"error": f"Sorry! no reflection with id '{reflection_id}' is found"}, 404
     

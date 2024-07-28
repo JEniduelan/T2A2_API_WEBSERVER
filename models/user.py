@@ -15,22 +15,24 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     
     # SQLAlchemy relationship - nests an instance of a Bible model in this one
-    bibles = db.relationship("Bible", back_populates="user")
+    bibles = db.relationship("Bible", back_populates="user", cascade='all, delete')
     # SQLAlchemy relationship - nests an instance of a Reflection model in this one
-    reflections = db.relationship("Reflection", back_populates="user")
+    reflections = db.relationship("Reflection", back_populates="user", cascade='all, delete')
     
     # SQLAlchemy relationship - nests an instance of a Follows model in this one
     follows = db.relationship(
         "Follows", 
         foreign_keys="Follows.follower_id", 
         back_populates="follower", 
-        primaryjoin="User.id == Follows.follower_id"
+        primaryjoin="User.id == Follows.follower_id",
+        cascade='all, delete'
         )
     followed_by = db.relationship(
         "Follows", 
         foreign_keys="Follows.following_id", 
         back_populates="following", 
-        primaryjoin="User.id == Follows.following_id"
+        primaryjoin="User.id == Follows.following_id",
+        cascade='all, delete'
         )
      
      

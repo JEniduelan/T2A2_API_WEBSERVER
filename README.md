@@ -317,10 +317,127 @@ class Reflection(db.Model):
 ---
 
 #### Follows Model:
+The Follows model keeps track of who follows whom within the app. It uses foreign keys to link to the User model, representing both the follower and the person being followed. This setup creates a network of relationships within the app where each user can follow multiple people and be followed by multiple people. Thanks to the back_populates attribute in the User model, we can easily retrieve a user's list of followers and the people they are following.
 
+
+```python
+class Follows(db.Model):
+    __tablename__ = "follows"
+    
+    id = db.Column(db.Integer, primary_key=True) 
+    # Foreign key - establishes a relationship at the database level
+    follower_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    following_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    
+    followed_at = db.Column(db.Date, default=datetime.now().strftime('%Y-%m-%d'))
+    
+    
+    # Specify the foreign keys in the relationships
+    follower = db.relationship(
+        "User", 
+        foreign_keys=[follower_id], 
+        back_populates="follows"
+        )
+    following = db.relationship(
+        "User", 
+        foreign_keys=[following_id], 
+        back_populates="followed_by"
+        )
+```
 
 ---
 
 ### **R8 - Explain how to use this application’s API endpoints. Each endpoint should be explained, including the following data for each endpoint:HTTP verb, Path or route, Any required body or header data, Response.** <a id="r8"></a>
 
+### **User Routes**
+#### **1. /register**
 
+- **HTTP Request Verb:** POST
+
+- **Required data:** name, email, password
+
+- **Expected response:** Expected '201 CREATED' response with return of data excluding password and is_admin.
+
+- **Functionality:** Allows user to register. This information is stored in the database.
+
+![Post /register](docs/Register%20User.png)
+
+---
+
+#### **2. /login**
+
+- **HTTP Request Verb:** POST
+
+- **Required Data:** email, password
+
+- **Expected Response:** Expected '200 OK' response with a JWT token and user information excluding password and tasks.
+
+- **Functionality:** Allows user to log in. If credentials are correct, a JWT token is created and returned along with user information.
+
+![Post /login](docs/User%20Login.png)
+
+---
+
+#### **3. /users**
+
+- **HTTP Request Verb:** GET
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with a list of user information excluding password.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Retrieves a list of all users. Only accessible by admin users.
+
+![Get /users](docs/Get%20users.png)
+
+---
+
+#### **4. /users/<int:id>**
+
+- **HTTP Request Verb:** DELETE
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response if the user is successfully deleted. '404 Not Found' if the user does not exist.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication. Admin access is also checked.
+
+- **Functionality:** Deletes a user with the specified ID.
+
+![Delete /users/<int:id>](docs/delete%20user.png)
+
+---
+
+#### **5. /users/<int:id>/make-admin**
+
+- **HTTP Request Verb:** PATCH
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response if the user is successfully updated to admin. '404 Not Found' if the user does not exist.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication. Admin access is also checked.
+
+- **Functionality:** Updates a user with the specified ID to admin status.
+
+![Patch /users/<int:id>/make-admin](docs/make%20admin.png)
+
+---
+
+#### **6. /users/<int:id>/remove-admin**
+
+- **HTTP Request Verb:** PATCH
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response if the user's admin privileges are successfully removed. '404 Not Found' if the user does not exist.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication. Admin access is also checked.
+
+- **Functionality:** Removes admin privileges from a user with the specified ID.
+
+![Patch /users/<int:id>/remove-admin](docs/remove%20admin.png)
+
+---
