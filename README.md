@@ -25,6 +25,20 @@ This project provides a seamless digital solution to this problem. Instead of re
 
 ### **R2 - Describe the way tasks are allocated and tracked in your project** <a id="r2"></a>
 
+https://trello.com/invite/b/668c85dceb3c2b115bd9d62b/ATTIbc0776acf568829eba959edc062fc3687F9969C5/t2a2apiwebserverq
+
+![Trello](docs/1%20trello.png)
+![Trello](docs/2%20trello.png)
+![Trello](docs/3%20trello.png)
+![Trello](docs/4%20trello.png)
+![Trello](docs/5%20trello.png)
+![Trello](docs/6%20trello.png)
+![Trello](docs/7%20trello.png)
+![Trello](docs/8%20trello.png)
+![Trello](docs/9%20trello.png)
+![Trello](docs/10%20trello.png)
+![Trello](docs/11%20trello.png)
+![Trello](docs/12%20trello.png)
 
 ---
 
@@ -60,6 +74,8 @@ Reads key-value pairs from a .env file and can set them as environment variables
 
 The database system used for this application is Postgresql and this is perfect for my app for a number of reasons:
 
+#### Benifits
+
 - **Reliability:** PostgreSQL is known for its rock-solid reliability. It's great at handling complex transactions and keeping data accurate, which is crucial for any application where data integrity is essential.
 
 - **ACID Compliance:** PostgreSQL adheres to the ACID principles (Atomicity, Consistency, Isolation, Durability), ensuring that our app's data remains consistent and secure even in the event of system failures or unexpected issues.
@@ -68,7 +84,7 @@ The database system used for this application is Postgresql and this is perfect 
 
 - **Active Community Support:** The PostgreSQL community is vibrant and supportive, offering extensive resources, documentation, and forums. This support network is invaluable for troubleshooting and following industry best practices.
 
-However, there are some drawbacks:
+#### Drawbacks
 
 - **Learning Curve:** Postgresql can be complex for beginners as it has a broad range of advanced features and extensive configuration options which can be overwhelming to set up and handle than other database systems. Despite this, the long-term benefits make the initial effort worthwhile.
 
