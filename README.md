@@ -26,9 +26,10 @@ This project provides a seamless digital solution to this problem. Instead of re
 ### **R2 - Describe the way tasks are allocated and tracked in your project** <a id="r2"></a>
 
 
-In this project, I used Trello to effectively track and allocate tasks for building my app. I organized my workflow into four sections: Backlog, To Do, Doing, and Done. Additionally, I implemented a three-level priority scale: low, medium, and high. Each task is assigned a due date and categorised based on its priority level. This system ensures that tasks are managed efficiently and deadlines are met systematically. Please click the linked provided for the Trello reference 
+In this project, I used Trello to effectively track and allocate tasks for building my app. I organised my workflow into four sections: Backlog, To Do, Doing, and Done. Additionally, I implemented a three-level priority scale: low, medium, and high. Each task is assigned a due date and categorised based on its priority level. This system ensures that tasks are managed efficiently and deadlines are met systematically. 
 
-[GitHub Projects](https://trello.com/invite/b/668c85dceb3c2b115bd9d62b/ATTIbc0776acf568829eba959edc062fc3687F9969C5/t2a2apiwebserverq)
+Please click the link provided for the Trello reference 
+[Trello Link](https://trello.com/invite/b/668c85dceb3c2b115bd9d62b/ATTIbc0776acf568829eba959edc062fc3687F9969C5/t2a2apiwebserverq)
 
 Here are the screenshots from Trello throughout the developement.
 
@@ -174,35 +175,148 @@ follows_schema = FollowsSchema(many=True)
 
 ### **R6 - Design an entity relationship diagram (ERD) for this app’s database, and explain how the relations between the diagrammed models will aid the database design.** <a id="r6"></a>
 
+![ERD](docs/Bible%20Notebook%20ERD.png)
+
+ - **Bible:**
+Primary Key: "bible_id"
+Foreign Key: "User_id"
+Attributes: "book", "chapter", "verse_number", "Bible_version", "verse_text"
+ - **Reflection:**
+Primary Key: "reflection_id"
+Foreign Keys: "bible_id", "user_id"
+Attributes: "Message", "date_created"
+ - **User:**
+Primary Key: "User_id"
+Attributes: "name", "email", "password", "is_admin"
+ - **follows:**
+Primary Key: "follow_id"
+Foreign Keys: "follower_id", "following_id"
+Attributes: "date_followed"
+
+#### Relationships
+
+ - **User and Bible:**
+
+One-to-Many Relationship: Each user can add multiple Bible verses (indicated by User_id as a foreign key in the Bible table).
+This relationship helps in associating each Bible verse entry with the user who added it.
+
+ - **User and Reflection:**
+
+One-to-Many Relationship: Each user can have multiple reflections (indicated by user_id as a foreign key in the Reflection table).
+This allows users to reflect on multiple verses and keep their reflections organized by user.
+
+ - **Bible and Reflection:**
+
+One-to-Many Relationship: Each Bible entry can have multiple reflections (indicated by bible_id as a foreign key in the Reflection table).
+This relationship ensures that multiple reflections can be linked to a single Bible verse.
+
+ - **User and follows:**
+
+Many-to-Many Relationship: Users can follow multiple other users (indicated by follower_id and following_id as foreign keys in the follows table).
+This relationship enables the social aspect of the app, where users can follow and interact with each other’s reflections and activities.
+
+#### How the Relationships Aid the Database Design
+
+ - **Data Integrity:** By using primary and foreign keys, the database ensures that all entries are linked correctly and that data integrity is maintained. For example, each reflection must be associated with a valid Bible entry and user.
+
+ - **Efficient Queries:** These relationships allow for efficient querying of data. For example, you can easily retrieve all reflections for a specific Bible verse or all verses added by a specific user.
+
+ - **Scalability:** The design supports scalability. As the number of users, Bible entries, and reflections grows, the database can efficiently manage and organize the data through these defined relationships.
+
+ - **Clear Structure:** The ERD provides a clear structure for developers to understand how data is organized and related, making it easier to implement features and maintain the app.
+
 
 ---
 
 ### **R7 - Explain the implemented models and their relationships, including how the relationships aid the database implementation.** <a id="r7"></a>
 
-class User(db.Model):
-	__tablename__ = "users"
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String)
-	email = db.Column(db.String, nullable=False, unique=True)
-	password = db.Column(db.String, nullable=False)
-	is_admin = db.Column(db.Boolean, default=False)
+#### User Model:
+The User model is the central entity of my app, encapsulating essential user-related information such as name, email, password, and admin status. It tracks user statistics, including completed tasks and streaks. This model establishes a one-to-many relationship with the Bible and Reflection models, allowing each user to manage multiple Bible entries and reflections. Additionally, the User model supports a many-to-many relationship through the follows model, enabling users to follow and be followed by others. This feature fosters a vibrant social community within the application, encouraging interaction and engagement among users.
 
+```python
+class User(db.Model):
+    __tablename__ = "users"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+    
+    # SQLAlchemy relationship - nests an instance of a Bible model in this one
+    bibles = db.relationship("Bible", back_populates="user")
+    # SQLAlchemy relationship - nests an instance of a Reflection model in this one
+    reflections = db.relationship("Reflection", back_populates="user")
+    
+    # SQLAlchemy relationship - nests an instance of a Follows model in this one
+    follows = db.relationship(
+        "Follows", 
+        foreign_keys="Follows.follower_id", 
+        back_populates="follower", 
+        primaryjoin="User.id == Follows.follower_id"
+        )
+    followed_by = db.relationship(
+        "Follows", 
+        foreign_keys="Follows.following_id", 
+        back_populates="following", 
+        primaryjoin="User.id == Follows.following_id"
+        )
+```     
 
 ---
 
 #### Bible Model:
+The Bible model represents individual Bible verses added by users. It includes fields for details such as the book, chapter, verse number, Bible version, and verse text. The model is linked to the User model through a foreign key, establishing a many-to-one relationship. This relationship allows each Bible entry to be associated with a specific user, indicating who added the verse. The back_populates attribute in the User model ensures that the user's Bible entries are populated appropriately. Additionally, the Bible model has a one-to-many relationship with the Reflection model, allowing each Bible verse to have multiple associated reflections.
 
+```python
+class Bible(db.Model):
+    __tablename__ = "bibles"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    
+    book = db.Column(db.String, nullable=False)
+    chapter = db.Column(db.Integer, nullable=False)
+    verse_number = db.Column(db.Integer, nullable=False)
+    version = db.Column(db.String, nullable=False)
+    verse = db.Column(db.Text, nullable=False)  
+    
+    # Foreign key - establishes a relationship at the database level
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    # SQLAlchemy relationship - nests an instance of a User model in this one
+    user = db.relationship("User", back_populates="bibles")
+    # SQLAlchemy relationship - nests an instance of a Reflection model in this one
+    reflections = db.relationship("Reflection", back_populates="bible", cascade="all,delete")
+```
 
 ---
 
 #### Reflection Model:
+The Reflection model represents individual reflections created by users on specific Bible verses. It includes fields for reflection details such as the message content and the date of creation. The model is linked to both the User and Bible models through foreign keys, establishing many-to-one relationships. This dual relationship allows each reflection to be associated with a specific user and a specific Bible entry. The back_populates attribute in the User and Bible models ensures that the corresponding reflections attribute is populated appropriately, maintaining a clear and organized structure for user reflections and their related Bible verses.
 
+
+```python
+class Reflection(db.Model):
+    __tablename__ = "reflections"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    
+    title = db.Column(db.String, nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    date = db.Column(db.Date)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    bible_id = db.Column(db.Integer, db.ForeignKey("bibles.id"), nullable=False)
+    
+    # SQLAlchemy relationship - nests an instance of a user model in this one
+    user = db.relationship("User", back_populates="reflections")
+    # SQLAlchemy relationship - nests an instance of a user model in this one
+    bible = db.relationship("Bible", back_populates="reflections")
+```   
 
 ---
 
 #### Follows Model:
-
-
 
 
 ---
