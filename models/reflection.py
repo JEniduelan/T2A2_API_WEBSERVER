@@ -14,8 +14,9 @@ class Reflection(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     bible_id = db.Column(db.Integer, db.ForeignKey("bibles.id"), nullable=False)
     
-    
+    # SQLAlchemy relationship - nests an instance of a user model in this one
     user = db.relationship("User", back_populates="reflections")
+    # SQLAlchemy relationship - nests an instance of a user model in this one
     bible = db.relationship("Bible", back_populates="reflections")
     
       

@@ -83,6 +83,71 @@ https://www.guru99.com/introduction-postgresql.html
 
 ### **R5 - Explain the features, purpose and functionalities of the object-relational mapping system (ORM) used in this app.** <a id="r5"></a>
 
+In my project, SQLAlchemy acts as a vital bridge between my code and the database. It serves as an Object-Relational Mapping (ORM) tool, making it easy for my app to interact with the database. By translating complex database queries into simple Python code, SQLAlchemy ensures smooth and efficient communication, allowing me to focus on developing features rather than managing database interactions.
+
+#### Features and functionalities
+
+- **Declarative Syntax:** Allows defining models using Python classes, making the code more readable and maintainable. For example in my User model:
+
+```python
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+```
+
+- **Relationships:** Supports defining relationships between models using foreign keys and relationship properties. For example in my Follows model:
+
+
+```python
+class Follows(db.Model):
+    __tablename__ = "follows"
+    id = db.Column(db.Integer, primary_key=True)
+    follower_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    following_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    follower = db.relationship("User", foreign_keys=[follower_id], back_populates="follows")
+    following = db.relationship("User", foreign_keys=[following_id], back_populates="followed_by")
+```
+
+- **Querying:** Provides a powerful querying API for database interactions. For instance, if I wanted to delete a Bible entry from the database, SQLAlchemy makes this task straightforward and efficient.
+
+
+```python
+@bible_bp.route("/<int:bible_id>", methods=["DELETE"])
+@jwt_required()
+def delete_bible(bible_id):
+    stmt = db.session.query(Bible).filter_by(id=bible_id)
+    bible = db.session.scalar(stmt)
+    
+    if bible:
+        
+        db.session.delete(bible)
+        db.session.commit()
+        return {"message":f"This bible with id '{bible.id}' has been successfuly deleted"}
+    
+    else:
+        return {"error": f"Sorry! no Bible card with id '{id}' is found"}, 404
+```
+
+
+- **Serialization:** Uses Flask-Marshmallow for serializing and deserializing model instances. For example, the FollowsSchema:
+
+```python
+class FollowsSchema(ma.Schema):
+    # Tell Marshmallow to nest a UserSchema instance when serializing the follower and following attributes    
+    follower = fields.Nested("UserSchema", only=["id", "name"])
+    following = fields.Nested("UserSchema", only=["id", "name"])
+        
+    class Meta:
+        fields = ("id", "follower_id", "following_id","followed_at", "follower", "following")
+        ordered = True  
+
+follow_schema = FollowsSchema()
+follows_schema = FollowsSchema(many=True)
+```
 
 ---
 
@@ -93,7 +158,13 @@ https://www.guru99.com/introduction-postgresql.html
 
 ### **R7 - Explain the implemented models and their relationships, including how the relationships aid the database implementation.** <a id="r7"></a>
 
-#### User Model:
+class User(db.Model):
+	__tablename__ = "users"
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String)
+	email = db.Column(db.String, nullable=False, unique=True)
+	password = db.Column(db.String, nullable=False)
+	is_admin = db.Column(db.Boolean, default=False)
 
 
 ---

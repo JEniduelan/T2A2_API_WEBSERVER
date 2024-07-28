@@ -4,6 +4,7 @@ from models.user import User
 from init import db
 
 def authorise(user_id=None):
+    
     # Get the user ID from the JWT token
     jwt_user_id = get_jwt_identity()
 
