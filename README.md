@@ -441,3 +441,160 @@ class Follows(db.Model):
 ![Patch /users/<int:id>/remove-admin](docs/remove%20admin.png)
 
 ---
+### **Bible Routes**
+---
+#### **7. /bibles**
+
+- **HTTP Request Verb:** GET
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with a list of bibles of users. The response includes bibles details excluding nested user information.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Retrieves all bibles from the app.
+
+![Get /bibles/](docs/all%20bibles.png)
+
+---
+#### **8./bibles/<int:id>**
+
+
+- **HTTP Request Verb:** GET
+
+- **Required Data:** Task ID in the URL
+
+- **Expected Response:** Expected '200 OK' response with details of the specified bible. The response includes nested bible information and nested reflection.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Retrieves details of a specific bible for the current user.
+
+![Get /bible/{id}](docs/1%20bible.png)
+
+---
+#### **9. /bibles/<int:id>**
+
+- **HTTP Request Verb:** DELETE
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with a message indicating the successful deletion of the bible.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Deletes the specified bible.
+
+![Delete /tasks/<int:id>](docs/delete%20bible.png)
+
+#### **9. /bible**
+
+- **HTTP Request Verb:** POST
+
+- **Required Data:** bible information in the request body (book, chapter, verse_number, version, verse)
+
+- **Expected Response:** Expected '201 CREATED' response with details of the newly created bible. The response excludes nested user information.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Creates a new bible for the current user.
+
+![Post /bible](docs/create%20bible.png)
+
+---
+### **Reflections Routes**
+---
+#### **9. /reflections**
+
+- **HTTP Request Verb:** POST
+
+- **Required Data:** reflection information in the request body (title, message)
+
+- **Expected Response:** Expected '201 CREATED' response with details of the newly created reflection. The response excludes nested user information.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Creates a new reflection for the current user.
+
+![Post /reflection](docs/create%20reflection.png)
+
+---
+#### **9. /bibles/<int:id>/reflection/<reflection:id>**
+
+- **HTTP Request Verb:** DELETE
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with a message indicating the successful deletion of the reflection.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Deletes the specified reflection from a bible.
+
+![Post /reflections](docs/delete%20reflection.png)
+
+---
+### **Follow Routes**
+---
+#### **12. /users/<int:user_id>/follow**
+
+- **HTTP Request Verb:** POST
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with a message indicating the successful follow action.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Follows the specified user.
+
+![Post /users/<int:user_id>/follow](docs/follow%20user.png)
+
+---
+
+#### **13. /users/<int:user_id>/unfollow**
+
+- **HTTP Request Verb:** POST
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with a message indicating the successful unfollow action.
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Unfollows the specified user.
+
+![Post /users/<int:user_id>/unfollow](docs/unfollow%20user.png)
+
+---
+
+#### **14. /users/<int:user_id>/followers**
+
+- **HTTP Request Verb:** GET
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with the total number of followers and a list of followers (containing follower_id and name).
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Retrieves the list of followers for the specified user.
+
+![Get /users/<int:user_id>/followers](docs/get%20user%20followers.png)
+
+---
+
+#### **15. /users/<int:user_id>/following**
+
+- **HTTP Request Verb:** GET
+
+- **Required Data:** None
+
+- **Expected Response:** Expected '200 OK' response with the total number of users being followed and a list of users being followed (containing following_id and name).
+
+- **Authentication Methods:** Requires a valid JWT token for authentication.
+
+- **Functionality:** Retrieves the list of users that the specified user is following.
+
+![Get /users/<int:user_id>/following](docs/get%20user%20following.png)
